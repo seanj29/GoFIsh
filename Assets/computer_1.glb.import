@@ -1,0 +1,45 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://dvkjmcna5wmv2"
+path="res://.godot/imported/computer_1.glb-9765696ec7734d3cc64c37e793e9597c.scn"
+
+[deps]
+
+source_file="res://Assets/computer_1.glb"
+dest_files=["res://.godot/imported/computer_1.glb-9765696ec7734d3cc64c37e793e9597c.scn"]
+
+[params]
+
+nodes/root_type="Interactable"
+nodes/root_name="computer"
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+_subresources={
+"nodes": {
+"PATH:computer_1": {
+"generate/physics": true,
+"physics/layer": 8,
+"physics/mask": 7,
+"physics/shape_type": 1
+}
+}
+}
+gltf/naming_version=1
+gltf/embedded_image_handling=1

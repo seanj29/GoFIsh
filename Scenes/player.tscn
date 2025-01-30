@@ -1,0 +1,49 @@
+[gd_scene load_steps=3 format=3 uid="uid://d4jowkd2jti44"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_cp1i6"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_clv34"]
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("ray_array", "interaction_label")]
+collision_layer = 2
+collision_mask = 13
+script = ExtResource("1_cp1i6")
+ray_array = [NodePath("Camera3D/Interaction Mid Ray"), NodePath("Camera3D/Interaction Bot Ray")]
+interaction_label = NodePath("Interaction Label")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62938, 0)
+
+[node name="Interaction Mid Ray" type="RayCast3D" parent="Camera3D"]
+target_position = Vector3(0, 0, -2)
+collision_mask = 12
+collide_with_areas = true
+
+[node name="Interaction Bot Ray" type="RayCast3D" parent="Camera3D"]
+target_position = Vector3(0, -2, -2)
+collision_mask = 12
+collide_with_areas = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00017, 0)
+shape = SubResource("CapsuleShape3D_clv34")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.17036, 0)
+light_bake_mode = 0
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="Interaction Label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -68.0
+offset_top = 126.0
+offset_right = 68.0
+offset_bottom = 149.0
+grow_horizontal = 2
+grow_vertical = 2
+vertical_alignment = 1
