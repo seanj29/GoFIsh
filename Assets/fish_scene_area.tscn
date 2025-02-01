@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://dystmaum322h7"]
+
+[ext_resource type="PackedScene" uid="uid://csr74lyfi33kd" path="res://Assets/fish_mx_1.glb" id="1_52ui8"]
+[ext_resource type="Script" path="res://Scripts/fish_scene.gd" id="2_vca5d"]
+[ext_resource type="Shader" path="res://Assets/fish_shader.gdshader" id="3_8k1nb"]
+[ext_resource type="Texture2D" uid="uid://desqdssvb7ywt" path="res://Assets/fish_mx_1_fish_mx_1.png" id="4_wkcum"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tuc21"]
+render_priority = 0
+shader = ExtResource("3_8k1nb")
+shader_parameter/time_scale = 2.0
+shader_parameter/side_to_side = 0.05
+shader_parameter/pivot = 2.0
+shader_parameter/wave = 0.05
+shader_parameter/twist = 0.1
+shader_parameter/mask_black = 0.0
+shader_parameter/mask_white = 1.0
+shader_parameter/color_texture = ExtResource("4_wkcum")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jyd10"]
+radius = 0.133603
+height = 0.615938
+
+[node name="fish_mx_12" instance=ExtResource("1_52ui8")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("2_vca5d")
+
+[node name="fish_mx_1" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0)
+layers = 3
+surface_material_override/0 = SubResource("ShaderMaterial_tuc21")
+
+[node name="Area3D" type="Area3D" parent="fish_mx_1" index="0"]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="fish_mx_1/Area3D" index="0"]
+transform = Transform3D(-4.37114e-08, -1, 8.74228e-08, 1, -4.37114e-08, 8.74228e-08, -8.74228e-08, 8.74228e-08, 1, -0.0565154, 0, 0)
+shape = SubResource("CapsuleShape3D_jyd10")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="fish_mx_1" index="1"]
+light_color = Color(0.784823, 0.451797, 3.85046e-07, 1)
+light_cull_mask = 4294966273
+distance_fade_enabled = true
+omni_range = 0.248674
+omni_shadow_mode = 0

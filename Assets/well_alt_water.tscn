@@ -1,0 +1,206 @@
+[gd_scene load_steps=13 format=3 uid="uid://dvdtqcol0ynsj"]
+
+[ext_resource type="PackedScene" uid="uid://bs5hge681llou" path="res://Assets/water_drinking_pool.glb" id="1_kiu5a"]
+[ext_resource type="Script" path="res://Scripts/well_interactable.gd" id="2_liuag"]
+[ext_resource type="Texture2D" uid="uid://cuph7xcfev8dt" path="res://Assets/water_drinking_pool_3.jpg" id="2_sebyo"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_m30s1"]
+radius = 1.2
+
+[sub_resource type="Shader" id="Shader_b2brw"]
+code = "// NOTE: Shader automatically converted from Godot Engine 4.3.stable's StandardMaterial3D.
+
+shader_type spatial;
+render_mode blend_mix, depth_draw_always, cull_back, diffuse_burley, specular_schlick_ggx;
+
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo : source_color, filter_linear_mipmap, repeat_enable;
+uniform float point_size : hint_range(0.1, 128.0, 0.1);
+
+uniform float roughness : hint_range(0.0, 1.0);
+uniform sampler2D texture_metallic : hint_default_white, filter_linear_mipmap, repeat_enable;
+uniform vec4 metallic_texture_channel;
+uniform sampler2D texture_roughness : hint_roughness_r, filter_linear_mipmap, repeat_enable;
+
+uniform float specular : hint_range(0.0, 1.0, 0.01);
+uniform float metallic : hint_range(0.0, 1.0, 0.01);
+
+uniform sampler2D texture_refraction : filter_linear_mipmap, repeat_enable;
+uniform float refraction : hint_range(-1.0, 1.0, 0.001);
+uniform vec4 refraction_texture_channel;
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_linear_mipmap;
+
+uniform sampler2D texture_normal : hint_roughness_normal, filter_linear_mipmap, repeat_enable;
+uniform float normal_scale : hint_range(-16.0, 16.0);
+varying vec3 uv1_triplanar_pos;
+
+uniform float uv1_blend_sharpness : hint_range(0.0, 150.0, 0.001);
+varying vec3 uv1_power_normal;
+
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
+
+void vertex() {
+	vec3 normal = MODEL_NORMAL_MATRIX * NORMAL;
+
+	TANGENT = vec3(0.0, 0.0, -1.0) * abs(normal.x);
+	TANGENT += vec3(1.0, 0.0, 0.0) * abs(normal.y);
+	TANGENT += vec3(1.0, 0.0, 0.0) * abs(normal.z);
+	TANGENT = inverse(MODEL_NORMAL_MATRIX) * normalize(TANGENT);
+
+	BINORMAL = vec3(0.0, 1.0, 0.0) * abs(normal.x);
+	BINORMAL += vec3(0.0, 0.0, -1.0) * abs(normal.y);
+	BINORMAL += vec3(0.0, 1.0, 0.0) * abs(normal.z);
+	BINORMAL = inverse(MODEL_NORMAL_MATRIX) * normalize(BINORMAL);
+
+	// UV1 Triplanar: Enabled (with World Triplanar)
+	uv1_power_normal = pow(abs(normal), vec3(uv1_blend_sharpness));
+	uv1_triplanar_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz * uv1_scale + uv1_offset + TIME * 0.01;
+	uv1_power_normal /= dot(uv1_power_normal, vec3(1.0));
+	uv1_triplanar_pos *= vec3(1.0, -1.0, 1.0);
+}
+
+vec4 triplanar_texture(sampler2D p_sampler, vec3 p_weights, vec3 p_triplanar_pos) {
+	vec4 samp = vec4(0.0);
+	samp += texture(p_sampler, p_triplanar_pos.xy) * p_weights.z;
+	samp += texture(p_sampler, p_triplanar_pos.xz) * p_weights.y;
+	samp += texture(p_sampler, p_triplanar_pos.zy * vec2(-1.0, 1.0)) * p_weights.x;
+	return samp;
+}
+
+void fragment() {
+	vec4 albedo_tex = triplanar_texture(texture_albedo, uv1_power_normal, uv1_triplanar_pos);
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+
+	float metallic_tex = dot(triplanar_texture(texture_metallic, uv1_power_normal, uv1_triplanar_pos), metallic_texture_channel);
+	METALLIC = metallic_tex * metallic;
+	SPECULAR = specular;
+
+	vec4 roughness_texture_channel = vec4(1.0, 0.0, 0.0, 0.0);
+	float roughness_tex = dot(triplanar_texture(texture_roughness, uv1_power_normal, uv1_triplanar_pos), roughness_texture_channel);
+	ROUGHNESS = roughness_tex * roughness;
+
+	// Normal Map: Enabled
+	NORMAL_MAP = triplanar_texture(texture_normal, uv1_power_normal, uv1_triplanar_pos).rgb;
+	NORMAL_MAP_DEPTH = normal_scale;
+
+	// Refraction: Enabled (with normal map texture)
+	vec3 unpacked_normal = NORMAL_MAP;
+	unpacked_normal.xy = unpacked_normal.xy * 2.0 - 1.0;
+	unpacked_normal.z = sqrt(max(0.0, 1.0 - dot(unpacked_normal.xy, unpacked_normal.xy)));
+	vec3 ref_normal = normalize(mix(
+			NORMAL,
+			TANGENT * unpacked_normal.x + BINORMAL * unpacked_normal.y + NORMAL * unpacked_normal.z,
+			NORMAL_MAP_DEPTH));
+	vec2 ref_ofs = SCREEN_UV - ref_normal.xy * dot(triplanar_texture(texture_refraction, uv1_power_normal, uv1_triplanar_pos), refraction_texture_channel) * refraction;
+
+	float ref_amount = 1.0 - albedo.a * albedo_tex.a;
+	EMISSION += textureLod(screen_texture, ref_ofs, ROUGHNESS * 8.0).rgb * ref_amount * EXPOSURE;
+	ALBEDO *= 1.0 - ref_amount;
+	// Force transparency on the material (required for refraction).
+	ALPHA = 1.0;
+}
+"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0mvy2"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pysfw"]
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_0mvy2")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nm1qr"]
+render_priority = 0
+shader = SubResource("Shader_b2brw")
+shader_parameter/albedo = Color(0, 0.196078, 0.196078, 0.772549)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 0.0
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/refraction = 0.05
+shader_parameter/refraction_texture_channel = null
+shader_parameter/normal_scale = 1.0
+shader_parameter/uv1_blend_sharpness = 1.0
+shader_parameter/uv1_scale = Vector3(0.1, 0.1, 0.1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/texture_albedo = ExtResource("2_sebyo")
+shader_parameter/texture_refraction = SubResource("NoiseTexture2D_pysfw")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_pysfw")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4vqxe"]
+size = Vector3(1.60645, 2.49463, 1.83582)
+
+[sub_resource type="Curve3D" id="Curve3D_50cmn"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.897469, -0.158158, 0.788021, 0, 0, 0, 0, 0, 0, -0.835207, -0.356114, 0.725283, 0, 0, 0, 0, 0, 0, 0.889461, -0.132557, 0.747158),
+"tilts": PackedFloat32Array(-1.59908, -1.64486, 0.5183)
+}
+point_count = 3
+
+[sub_resource type="Curve3D" id="Curve3D_3opbx"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.131525, 0.792333, 0.788021, 0, 0, 0, 0, 0, 0, -0.00321436, -0.733027, 0.771841, 0, 0, 0, 0, 0, 0, 0.124886, 0.863813, 0.788021),
+"tilts": PackedFloat32Array(-1.71578, -1.76595, -1.659)
+}
+point_count = 3
+
+[sub_resource type="Curve3D" id="Curve3D_1ga23"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -0.419993, 0.739016, 0.712818, 0, 0, 0, 0, 0, 0, 0.659563, -0.577573, 0.766818, 0, 0, 0, 0, 0, 0, 0.110292, 0.671577, 0.639737),
+"tilts": PackedFloat32Array(1.46713, 1.41561, 1.30705)
+}
+point_count = 3
+
+[node name="Hole" node_paths=PackedStringArray("path_follows") instance=ExtResource("1_kiu5a")]
+script = ExtResource("2_liuag")
+path_follows = [NodePath("Sketchfab_model/Path_1/PathFollow3D"), NodePath("Sketchfab_model/Path_2/PathFollow3D"), NodePath("Sketchfab_model/Path_3/PathFollow3D")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Sketchfab_model" index="0"]
+transform = Transform3D(1, 0, 0, 0, 2.22045e-16, -1, 0, 1, 2.22045e-16, 0, 0, 0)
+collision_layer = 8
+collision_mask = 7
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_model/StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_m30s1")
+
+[node name="water_water_0" parent="Sketchfab_model/bf62acf9009844138569e08bc063824a_fbx/RootNode/waterpotlow/water" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00212365, 1.19209e-07, 0.00141096)
+surface_material_override/0 = SubResource("ShaderMaterial_nm1qr")
+
+[node name="Area3D" type="Area3D" parent="Sketchfab_model" index="2"]
+collision_layer = 8
+collision_mask = 4
+input_ray_pickable = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_model/Area3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.065918, 0.0510254, 0.417908)
+shape = SubResource("BoxShape3D_4vqxe")
+
+[node name="Path_1" type="Path3D" parent="Sketchfab_model" index="3"]
+curve = SubResource("Curve3D_50cmn")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="Sketchfab_model/Path_1" index="0"]
+transform = Transform3D(-0.11434, -0.0329669, 0.992899, 0.993137, -0.0280987, 0.113438, 0.0241575, 0.999126, 0.0359517, 0.897469, -0.158158, 0.788021)
+rotation_mode = 4
+
+[node name="Path_2" type="Path3D" parent="Sketchfab_model" index="4"]
+curve = SubResource("Curve3D_3opbx")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="Sketchfab_model/Path_2" index="0"]
+transform = Transform3D(-0.995811, 0.0249095, 0.0879864, 0.0876878, -0.0128038, 0.996076, 0.0259374, 0.999631, 0.0105658, 0.131525, 0.792333, 0.788021)
+rotation_mode = 4
+
+[node name="Path_3" type="Path3D" parent="Sketchfab_model" index="5"]
+curve = SubResource("Curve3D_1ga23")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="Sketchfab_model/Path_3" index="0"]
+transform = Transform3D(-0.772949, 0.0301908, -0.633729, -0.631127, 0.065663, 0.772874, 0.0649474, 0.997385, -0.0316994, -0.419993, 0.739016, 0.712818)
+rotation_mode = 4
+
