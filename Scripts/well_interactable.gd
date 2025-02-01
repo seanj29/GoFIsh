@@ -5,8 +5,7 @@ extends Interactable
 @export var player: Player
 @export var fish_scene: PackedScene
 @export var path_follows: Array[PathFollow3D]
-var fish_array: Array[Fish] = []
-@onready var fish_count = fish_array.size()
+var fish_count = 0
 
 # @onready var spawn_loc: PathFollow3D = $Sketchfab_model/SpawnPath/SpawnLocation
 # @onready var targ_location: PathFollow3D = $Sketchfab_model/SpawnPath/EndLocation
@@ -18,9 +17,8 @@ func _physics_process(delta: float) -> void:
 	if fish_count > 0:
 		for path in path_follows:
 			if path.progress_ratio < 1.0:
-				path.progress_ratio += 0.1 * delta
+				path.progress += 1.0 * delta
 			else:
-				fish_count -= 1
 				path.progress_ratio = 0.0
 				
 func interact():
@@ -40,14 +38,16 @@ func interact():
 func _on_mob_timer_timeout():
 
 	if fish_count < 4:
-		fish_count += 1
 		var random_path: PathFollow3D = path_follows.pick_random()
 		random_path.progress_ratio = 0.0
 		var fish = fish_scene.instantiate()
+		fish_count += 1
+		fish.queued_for_deletion.connect(func(): fish_count -= 1)
 		random_path.add_child(fish)
 		fish.init(random_path.global_position)
 
-	
+
+
 
 func get_interact_text() -> String:
 	return "Press E to fish"

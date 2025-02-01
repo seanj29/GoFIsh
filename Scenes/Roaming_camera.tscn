@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbe1swgl5x35e"]
+
+[ext_resource type="PackedScene" uid="uid://cnasiwm4pe844" path="res://Assets/old_fishing_spear.glb" id="1_wvpmp"]
+
+[node name="Roaming Camera" type="Camera3D"]
+transform = Transform3D(-0.20566, 0.916974, -0.341852, -0.161608, 0.3127, 0.936003, 0.965187, 0.247744, 0.0838805, -0.612508, 2.13964, 0.122974)
+
+[node name="Spear" parent="." instance=ExtResource("1_wvpmp")]
+transform = Transform3D(-0.199797, -0.979143, 0.0368849, 0.372133, -0.11065, -0.921561, 0.906421, -0.1704, 0.386479, 0.379056, 0.415556, -0.0979595)
