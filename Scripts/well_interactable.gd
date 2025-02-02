@@ -5,7 +5,10 @@ extends Interactable
 @export var player: Player
 @export var fish_scene: PackedScene
 @export var path_follows: Array[PathFollow3D]
+@onready var spear: Node3D = roaming_cam.get_child(0)
+
 var fish_count = 0
+var turned_on = false
 
 # @onready var spawn_loc: PathFollow3D = $Sketchfab_model/SpawnPath/SpawnLocation
 # @onready var targ_location: PathFollow3D = $Sketchfab_model/SpawnPath/EndLocation
@@ -23,17 +26,39 @@ func _physics_process(delta: float) -> void:
 				
 func interact():
 	if pickable:
-
-		mob_timer.start(randf_range(0.1, 1))
+		turned_on = true
+		Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN 
+		mob_timer.start(randf_range(1.0, 1.5))
 		player.can_interact = false
-		if not roaming_cam.is_current():
-			roaming_cam.set_current(true)
-		else:
-			roaming_cam.set_current(false)
+		roaming_cam.make_current()
+		spear.visible = true
 		#animation player here.
 		# add extra logic to move the player scene to the computer?
-		print("Interacted with ", self)
 		pickable = false
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion and turned_on:
+		# var space_state := get_world_3d().direct_space_state
+		var mousepos := get_viewport().get_mouse_position()
+		var cam_origin := roaming_cam.project_ray_origin(mousepos)
+		var looking_direction := (cam_origin + roaming_cam.project_ray_normal(mousepos) * 2)
+		# var detectionParameters = PhysicsRayQueryParameters3D.new() 
+		# detectionParameters.collide_with_areas = true
+		# detectionParameters.from = cam_origin
+		# detectionParameters.to = looking_direction
+		spear.global_position = Vector3(looking_direction.x, spear.global_position.y, looking_direction.z)
+		# var result := space_state.intersect_ray(detectionParameters)
+		# if result:
+		# 	print("Detected object: ", result.collider_id)
+	if event.is_action_pressed("quit"):
+		turned_on = false
+		mob_timer.stop()
+		roaming_cam.current = false
+		spear.visible = false
+		player.can_interact = true
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		pickable = true
+
 
 func _on_mob_timer_timeout():
 
@@ -42,7 +67,7 @@ func _on_mob_timer_timeout():
 		random_path.progress_ratio = 0.0
 		var fish = fish_scene.instantiate()
 		fish_count += 1
-		fish.queued_for_deletion.connect(func(): fish_count -= 1)
+		fish.tree_exiting.connect(func(): fish_count -= 1)
 		random_path.add_child(fish)
 		fish.init(random_path.global_position)
 
@@ -50,7 +75,7 @@ func _on_mob_timer_timeout():
 
 
 func get_interact_text() -> String:
-	return "Press E to fish"
+	return "Press E to inspect"
 
 
 		

@@ -1,3 +1,15 @@
-Self: A Mask.\
-Need to wear it when fishing.
+if {Inspected_Mask} == false:
+	Self: A Mask.
+	Self: Need to wear it when fishing.
 Self: Just in case.
+Pick up mask?
+- Yes?
+	set {Has_Mask} = true
+	set {Inspected_Mask} = true
+- No
+	set {Inspected_Mask} = true
+if ({Inspected_Mask} == true) and ({Has_Hammer} == true) and ({Mask_Smashed} == false):
+	Smash mask?
+	- Yes
+		set {Mask_Smashed} = true
+	- No

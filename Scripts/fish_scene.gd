@@ -1,6 +1,7 @@
 extends Node3D
 class_name Fish
-signal queued_for_deletion
+
+@onready var light: OmniLight3D = $fish_mx_1/OmniLight3D
 # Minimum speed of the fish in meters per second.
 # @export var min_speed = 1
 # # Maximum speed of the fish in meters per second.
@@ -10,6 +11,8 @@ signal queued_for_deletion
 
 # func _physics_process(delta: float) -> void:
 #     position += velocity * delta
+
+    
 
 func init(start_pos: Vector3) -> void:
    global_position = start_pos
@@ -25,5 +28,7 @@ func init(start_pos: Vector3) -> void:
 
 
 func _on_life_timer_timeout() -> void:
-    queued_for_deletion.emit()
     queue_free()
+
+
+

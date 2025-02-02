@@ -9,7 +9,7 @@ collision_layer = 2
 collision_mask = 13
 script = ExtResource("1_cp1i6")
 ray_array = [NodePath("Camera3D/Interaction Mid Ray"), NodePath("Camera3D/Interaction Bot Ray")]
-interaction_label = NodePath("Interaction Label")
+interaction_label = NodePath("")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62938, 0)
@@ -35,17 +35,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.17036, 0)
 light_bake_mode = 0
 shadow_enabled = true
 omni_range = 10.0
-
-[node name="Interaction Label" type="RichTextLabel" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -68.0
-offset_top = 126.0
-offset_right = 68.0
-offset_bottom = 149.0
-grow_horizontal = 2
-grow_vertical = 2
-bbcode_enabled = true

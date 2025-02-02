@@ -1,3 +1,9 @@
-Self: A Hammer.
-Self: For Hammering fish.
-Self: Pretty obvious.
+if {Inspected_Hammer} == false:
+	Self: A Hammer.
+Self: For hammering, I guess?
+Pick up hammer?
+- Yes
+	set {Has_Hammer} = true
+	set {Inspected_Hammer} = true
+- No
+	set {Inspected_Hammer} = true

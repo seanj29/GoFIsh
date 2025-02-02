@@ -34,5 +34,9 @@ void vertex(){
 
 void fragment(){
 	vec4 final_color = texture(color_texture, UV);
-	ALBEDO = final_color.rgb;
+	float factor = 0.2; // Adjust this value for more or less whitening
+    
+    // Blend the color towards white
+    vec3 brightened = mix(final_color.rgb, vec3(1.0), factor);
+	ALBEDO = brightened;
 }

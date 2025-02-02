@@ -4,6 +4,7 @@ class_name Interactable
 @export var pickable = true
 signal return_control
 
+
 # Override this function to add custom interaction logic
 func interact():
     if pickable:

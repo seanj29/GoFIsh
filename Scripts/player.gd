@@ -39,7 +39,7 @@ func _process(_delta: float) -> void:
 			reset_label = false
 	
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("interact") and not in_dialogue:
 		for ray in ray_array:
 			if ray.is_colliding():

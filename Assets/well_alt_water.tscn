@@ -187,19 +187,19 @@ shape = SubResource("BoxShape3D_4vqxe")
 curve = SubResource("Curve3D_50cmn")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Sketchfab_model/Path_1" index="0"]
-transform = Transform3D(-0.11434, -0.0329669, 0.992899, 0.993137, -0.0280987, 0.113438, 0.0241575, 0.999126, 0.0359517, 0.897469, -0.158158, 0.788021)
+transform = Transform3D(-0.114339, -0.0329669, 0.992899, 0.993137, -0.0280991, 0.113437, 0.024158, 0.999126, 0.0359517, 0.897469, -0.158158, 0.788021)
 rotation_mode = 4
 
 [node name="Path_2" type="Path3D" parent="Sketchfab_model" index="4"]
 curve = SubResource("Curve3D_3opbx")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Sketchfab_model/Path_2" index="0"]
-transform = Transform3D(-0.995811, 0.0249095, 0.0879864, 0.0876878, -0.0128038, 0.996076, 0.0259374, 0.999631, 0.0105658, 0.131525, 0.792333, 0.788021)
+transform = Transform3D(-0.995811, 0.0249037, 0.0879863, 0.0876878, -0.0128034, 0.996076, 0.0259316, 0.999631, 0.0105659, 0.131525, 0.792333, 0.788021)
 rotation_mode = 4
 
 [node name="Path_3" type="Path3D" parent="Sketchfab_model" index="5"]
 curve = SubResource("Curve3D_1ga23")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Sketchfab_model/Path_3" index="0"]
-transform = Transform3D(-0.772949, 0.0301908, -0.633729, -0.631127, 0.065663, 0.772874, 0.0649474, 0.997385, -0.0316994, -0.419993, 0.739016, 0.712818)
+transform = Transform3D(-0.772949, 0.0301898, -0.633729, -0.631127, 0.0656624, 0.772874, 0.0649463, 0.997385, -0.0316995, -0.419993, 0.739016, 0.712818)
 rotation_mode = 4
