@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://us0yp7p5fc05"]
+[gd_scene load_steps=4 format=3 uid="uid://us0yp7p5fc05"]
 
+[ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_5iufw"]
 [ext_resource type="Shader" path="res://Assets/crt_effect_shader.gdshader" id="1_la7bg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5blvg"]
@@ -26,13 +27,14 @@ shader_parameter/clip_warp = false
 shader_parameter/vignette_intensity = 0.4
 shader_parameter/vignette_opacity = 0.579
 
-[node name="Rules_Control" type="Control"]
+[node name="Main_menu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_5iufw")
 
 [node name="ColorRect2" type="ColorRect" parent="."]
 layout_mode = 1
@@ -70,14 +72,17 @@ bbcode_enabled = true
 text = "[center][b]GO FISH[/b][/center]"
 fit_content = true
 
-[node name="Button" type="Button" parent="ColorRect/HBoxContainer"]
+[node name="Start" type="Button" parent="ColorRect/HBoxContainer"]
 layout_mode = 2
-focus_neighbor_bottom = NodePath("../Button2")
-focus_next = NodePath("../Button2")
+focus_neighbor_bottom = NodePath("../Quit")
+focus_next = NodePath("../Quit")
 text = "Start"
 
-[node name="Button2" type="Button" parent="ColorRect/HBoxContainer"]
+[node name="Quit" type="Button" parent="ColorRect/HBoxContainer"]
 layout_mode = 2
-focus_neighbor_top = NodePath("../Button")
-focus_previous = NodePath("../Button")
+focus_neighbor_top = NodePath("../Start")
+focus_previous = NodePath("../Start")
 text = "Quit"
+
+[connection signal="pressed" from="ColorRect/HBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="ColorRect/HBoxContainer/Quit" to="." method="_on_quit_pressed"]

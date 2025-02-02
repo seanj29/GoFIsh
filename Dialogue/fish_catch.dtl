@@ -1,0 +1,7 @@
+if not {FishItems.last_caught}:
+	Self: Caught a fish.
+	Self: Seems pretty normal.
+else:
+	Caught {FishItems.last_caught}?
+	<Weird./Odd./Strange.>
+	Self: Better put it on the table.

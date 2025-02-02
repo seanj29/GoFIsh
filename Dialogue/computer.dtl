@@ -5,7 +5,7 @@ if {Computer_On} == false:
 		set {Computer_On} = true
 	- No
 else:
-	Turn it off?
+	Turn off the computer?
 	- Yes
 		set {Computer_On} = false
 	- No

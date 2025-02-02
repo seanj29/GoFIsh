@@ -28,6 +28,7 @@ directories/dch_directory={
 }
 directories/dtl_directory={
 "computer": "res://Dialogue/computer.dtl",
+"fish_catch": "res://Dialogue/fish_catch.dtl",
 "hammer": "res://Dialogue/hammer.dtl",
 "main": "res://Dialogue/main.dtl",
 "mask": "res://Dialogue/mask.dtl",

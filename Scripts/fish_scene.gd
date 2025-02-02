@@ -30,8 +30,9 @@ func init(start_pos: Vector3) -> void:
     # velocity = velocity.rotated(Vector3.UP, rotation.y)
 
 func caught() -> void:
-    print("got caught I guess")
-    print("contains %s" % contains)
+    FishItems.item_found.emit(contains)
+    Dialogic.start("fish_catch")
+    contains = ""
     if not is_queued_for_deletion():
         queue_free()
 
