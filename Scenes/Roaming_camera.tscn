@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cbe1swgl5x35e"]
+[gd_scene load_steps=3 format=3 uid="uid://cbe1swgl5x35e"]
 
 [ext_resource type="PackedScene" uid="uid://cnasiwm4pe844" path="res://Assets/old_fishing_spear.glb" id="1_wvpmp"]
+[ext_resource type="AudioStream" uid="uid://byextl5sjh21" path="res://Assets/water_splash.mp3" id="2_6eqjy"]
 
 [node name="Roaming Camera" type="Camera3D"]
 transform = Transform3D(-0.20566, 0.916974, -0.341852, -0.161608, 0.3127, 0.936003, 0.965187, 0.247744, 0.0838805, -0.612508, 2.13964, 0.122974)
@@ -16,3 +17,12 @@ collision_mask = 4
 hit_from_inside = true
 collide_with_areas = true
 collide_with_bodies = false
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Spear"]
+transform = Transform3D(0.999999, 8.10251e-07, 4.93601e-08, -5.58794e-09, 1, 8.04663e-07, 1.86265e-08, 8.9407e-08, 0.999999, -1.86753, 0.0346913, 0.073242)
+stream = ExtResource("2_6eqjy")
+volume_db = -19.844
+max_db = 1.857
+pitch_scale = 1.11
+playback_type = 1
+doppler_tracking = 2

@@ -7,6 +7,7 @@ extends Interactable
 @export var path_follows: Array[PathFollow3D]
 @onready var spear: Node3D = well_cam.get_node("Spear")
 @onready var ray_cast: RayCast3D = spear.get_node("RayCast3D")
+@onready var audio: AudioStreamPlayer3D = spear.get_node("AudioStreamPlayer3D")
 @onready var player_cam: Camera3D = player.get_node("Camera3D")
 
 var fish_count = 0
@@ -64,12 +65,14 @@ func _unhandled_input(event: InputEvent) -> void:
         var mouse_event = event as InputEventMouseButton
         if mouse_event.pressed and mouse_event.button_index == MOUSE_BUTTON_LEFT:
             _animate_spear()
+            await get_tree().create_timer(0.4).timeout
             if ray_cast.is_colliding():
                 var collision: Area3D = ray_cast.get_collider()
                 if collision.get_parent().get_parent() is Fish:
                     var fish: Fish = collision.get_parent().get_parent()
-                    quit()
                     fish.caught()
+                    quit()
+
 
                     
     if event.is_action_pressed("quit"):
@@ -89,6 +92,7 @@ func _on_mob_timer_timeout():
 
 func _animate_spear():
     var tween = get_tree().create_tween()
+    audio.play()
     tween.tween_property(spear, "global_position:y", -1.0, 0.25).as_relative().set_trans(Tween.TRANS_EXPO)
     tween.tween_interval(0.2)
     tween.tween_property(spear, "global_position:y", 1.0, 0.5).as_relative().set_trans(Tween.TRANS_SINE)

@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://dvdtqcol0ynsj"]
+[gd_scene load_steps=13 format=3 uid="uid://dvdtqcol0ynsj"]
 
 [ext_resource type="PackedScene" uid="uid://bs5hge681llou" path="res://Assets/water_drinking_pool.glb" id="1_kiu5a"]
 [ext_resource type="Script" path="res://Scripts/well_interactable.gd" id="2_liuag"]
 [ext_resource type="Texture2D" uid="uid://cuph7xcfev8dt" path="res://Assets/water_drinking_pool_3.jpg" id="2_sebyo"]
+[ext_resource type="AudioStream" uid="uid://b5kbbj3mj6ltp" path="res://Assets/well_sound.mp3" id="4_owjwa"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_m30s1"]
 radius = 1.2
@@ -174,14 +175,14 @@ surface_material_override/0 = SubResource("ShaderMaterial_nm1qr")
 curve = SubResource("Curve3D_50cmn")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Sketchfab_model/Path_1" index="0"]
-transform = Transform3D(-0.114339, -0.0329669, 0.992899, 0.993137, -0.0280991, 0.113437, 0.024158, 0.999126, 0.0359517, 0.897469, -0.158158, 0.788021)
+transform = Transform3D(-0.114339, -0.0329669, 0.992899, 0.993137, -0.0280992, 0.113437, 0.024158, 0.999126, 0.0359517, 0.897469, -0.158158, 0.788021)
 rotation_mode = 4
 
 [node name="Path_2" type="Path3D" parent="Sketchfab_model" index="3"]
 curve = SubResource("Curve3D_3opbx")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Sketchfab_model/Path_2" index="0"]
-transform = Transform3D(-0.995811, 0.0249037, 0.0879863, 0.0876878, -0.0128034, 0.996076, 0.0259316, 0.999631, 0.0105659, 0.131525, 0.792333, 0.788021)
+transform = Transform3D(-0.995811, 0.0249037, 0.0879862, 0.0876878, -0.0128034, 0.996076, 0.0259316, 0.999631, 0.0105659, 0.131525, 0.792333, 0.788021)
 rotation_mode = 4
 
 [node name="Path_3" type="Path3D" parent="Sketchfab_model" index="4"]
@@ -190,3 +191,12 @@ curve = SubResource("Curve3D_1ga23")
 [node name="PathFollow3D" type="PathFollow3D" parent="Sketchfab_model/Path_3" index="0"]
 transform = Transform3D(-0.772949, 0.0301898, -0.633729, -0.631127, 0.0656624, 0.772874, 0.0649463, 0.997385, -0.0316995, -0.419993, 0.739016, 0.712818)
 rotation_mode = 4
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Sketchfab_model" index="5"]
+stream = ExtResource("4_owjwa")
+volume_db = -20.0
+max_db = 0.0
+pitch_scale = 0.58
+autoplay = true
+max_distance = 5.0
+playback_type = 1
