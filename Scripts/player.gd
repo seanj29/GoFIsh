@@ -7,7 +7,7 @@ class_name Player
 @export var interaction_label: RichTextLabel
 var reset_label: bool = false
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-var in_dialogue = false
+var stop_movement = false
 var can_interact = true
 
 func _ready() -> void:
@@ -16,11 +16,11 @@ func _ready() -> void:
 	Dialogic.start("main")
 
 func _on_timeline_started() -> void:
-	in_dialogue = true
+	stop_movement = true
 	can_interact = false
 
 func _on_timeline_ended() -> void:
-	in_dialogue = false
+	stop_movement = false
 	await get_tree().create_timer(0.5).timeout
 	can_interact = true
 
@@ -40,7 +40,7 @@ func _process(_delta: float) -> void:
 	
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("interact") and not in_dialogue:
+	if event.is_action_pressed("interact") and not stop_movement:
 		for ray in ray_array:
 			if ray.is_colliding():
 				var item := ray.get_collider()
@@ -57,7 +57,7 @@ func _physics_process(delta):
 
 	
 	# Get the input direction and handle the movement/deceleration.
-	if in_dialogue:
+	if stop_movement:
 		return
 	var forward_vec: float = Input.get_axis("up", "down")
 	var direction_float: float = Input.get_axis("right", "left")

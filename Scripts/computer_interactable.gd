@@ -3,8 +3,6 @@ extends Interactable
 @onready var computer_screen = $Screen
 
 
-func _ready() -> void:
-	Dialogic.VAR.variable_changed.connect(_dialogic_parse)
 
 func _dialogic_parse(info: Dictionary):
 	if info.variable == "Computer_On":

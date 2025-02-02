@@ -3,6 +3,11 @@ class_name Interactable
 
 @export var pickable = true
 
+func _ready() -> void:
+    Dialogic.VAR.variable_changed.connect(_dialogic_parse)
+
+func _dialogic_parse(info: Dictionary):
+    pass
 
 # Override this function to add custom interaction logic
 func interact():

@@ -1,0 +1,5 @@
+Go Fish?
+- Yes
+	set {Fishing} = true
+- No
+	set {Fishing} = false
