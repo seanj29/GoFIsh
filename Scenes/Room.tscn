@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c018v2o2bwbdn"]
+[gd_scene load_steps=20 format=3 uid="uid://c018v2o2bwbdn"]
 
 [ext_resource type="PackedScene" uid="uid://d4jowkd2jti44" path="res://Scenes/player.tscn" id="1_0cssf"]
 [ext_resource type="Texture2D" uid="uid://bpp7spe8r5wkc" path="res://Assets/wood_3.png" id="1_vsptp"]
@@ -10,8 +10,11 @@
 [ext_resource type="Script" path="res://Scripts/mask_interactable.gd" id="7_nwped"]
 [ext_resource type="PackedScene" uid="uid://dvdtqcol0ynsj" path="res://Assets/well_alt_water.tscn" id="7_owome"]
 [ext_resource type="Script" path="res://Scripts/hammer_interactable_logic.gd" id="9_kdv0w"]
+[ext_resource type="PackedScene" uid="uid://pnmnabqoncf6" path="res://Assets/wrench_mx_1.glb" id="10_4l84h"]
 [ext_resource type="PackedScene" uid="uid://c2el24u5vylvd" path="res://Assets/computer_with_screen.tscn" id="10_neled"]
+[ext_resource type="PackedScene" uid="uid://bnh5rhdhjsm1m" path="res://Assets/first_aid_kit_hr_2.glb" id="11_h2lf7"]
 [ext_resource type="PackedScene" uid="uid://cbe1swgl5x35e" path="res://Scenes/Roaming_camera.tscn" id="12_ey8rl"]
+[ext_resource type="PackedScene" uid="uid://de6yng6bfeweq" path="res://Assets/glass_bottle_mx_1.glb" id="12_ksw6n"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clwbx"]
 albedo_texture = ExtResource("1_vsptp")
@@ -39,9 +42,9 @@ flip_faces = true
 size = Vector3(12, 4, 10)
 material = SubResource("StandardMaterial3D_clwbx")
 
-[node name="Hole" parent="Room" node_paths=PackedStringArray("roaming_cam", "mob_timer", "player") instance=ExtResource("7_owome")]
+[node name="Hole" parent="Room" node_paths=PackedStringArray("well_cam", "mob_timer", "player") instance=ExtResource("7_owome")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.66876, 0)
-roaming_cam = NodePath("../../Roaming Camera")
+well_cam = NodePath("../../Well Cam")
 mob_timer = NodePath("../FishSpawnTimer")
 player = NodePath("../../Player")
 fish_scene = ExtResource("4_g7yfy")
@@ -57,14 +60,29 @@ transform = Transform3D(-1, -3.82137e-15, 8.74228e-08, -8.74228e-08, 4.37114e-08
 script = ExtResource("7_nwped")
 
 [node name="table_large_33" parent="Room" instance=ExtResource("5_4sftc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.32291, -2, 3.49005)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.09798, -2, 3.99219)
 
-[node name="hammer_mx_12" parent="Room" instance=ExtResource("6_16rf3")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 4.38446, -1.03, 3.34191)
+[node name="hammer_mx_12" parent="Room/table_large_33" instance=ExtResource("6_16rf3")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.0615501, 0.97, -0.14814)
+visible = false
 script = ExtResource("9_kdv0w")
 
-[node name="computer" parent="Room" instance=ExtResource("10_neled")]
+[node name="wrench_mx_12" parent="Room/table_large_33" instance=ExtResource("10_4l84h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.581066, 0.983314, 0.255265)
+visible = false
+
+[node name="first_aid_kit_hr_22" parent="Room/table_large_33" instance=ExtResource("11_h2lf7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.686814, 0.97, 0.0820019)
+visible = false
+
+[node name="glass_bottle_mx_12" parent="Room/table_large_33" instance=ExtResource("12_ksw6n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.637783, 0.97, -0.0896187)
+visible = false
+
+[node name="computer" parent="Room" node_paths=PackedStringArray("player", "computer_camera") instance=ExtResource("10_neled")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.261564, -1.03, -3.78619)
+player = NodePath("../../Player")
+computer_camera = NodePath("../../Computer Cam")
 
 [node name="FishSpawnTimer" type="Timer" parent="Room"]
 wait_time = 0.5
@@ -78,7 +96,11 @@ libraries = {
 "": SubResource("AnimationLibrary_b8pp4")
 }
 
-[node name="Roaming Camera" parent="." instance=ExtResource("12_ey8rl")]
+[node name="Well Cam" parent="." instance=ExtResource("12_ey8rl")]
+rotation_edit_mode = 2
+
+[node name="Computer Cam" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.269162, 1.49492, -3.08878)
 
 [node name="Interaction Label" type="RichTextLabel" parent="."]
 anchors_preset = 8

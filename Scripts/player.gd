@@ -57,17 +57,15 @@ func _physics_process(delta):
 
 	
 	# Get the input direction and handle the movement/deceleration.
-	if stop_movement:
-		return
 	var forward_vec: float = Input.get_axis("up", "down")
 	var direction_float: float = Input.get_axis("right", "left")
 	
 	var direction := Vector3.MODEL_FRONT.rotated(Vector3.UP,rotation.y) * forward_vec
-	if direction and not direction_float:
+	if direction and not direction_float and not stop_movement:
 		velocity = direction * Speed
 	elif direction and direction_float:
 		velocity = Vector3.ZERO
-	else:
+	elif not stop_movement:
 		velocity = Vector3.ZERO	
 		rotate_y(direction_float * Turn_Sens)
 	

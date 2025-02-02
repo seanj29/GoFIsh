@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bf5gv7qccxe3e"]
+[gd_scene load_steps=3 format=3 uid="uid://us0yp7p5fc05"]
 
-[ext_resource type="Shader" path="res://Assets/crt_effect_shader.gdshader" id="1_x67sj"]
+[ext_resource type="Shader" path="res://Assets/crt_effect_shader.gdshader" id="1_la7bg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5blvg"]
-shader = ExtResource("1_x67sj")
+shader = ExtResource("1_la7bg")
 shader_parameter/overlay = true
 shader_parameter/scanlines_opacity = 0.4
 shader_parameter/scanlines_width = 0.25
@@ -59,16 +59,25 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 150
 alignment = 1
 
-[node name="RichTextLabel" type="RichTextLabel" parent="ColorRect/HBoxContainer"]
-custom_minimum_size = Vector2(200, 200)
+[node name="RichTextLabel2" type="RichTextLabel" parent="ColorRect/HBoxContainer"]
 layout_mode = 2
-theme_override_colors/default_color = Color(0, 0.976471, 0, 1)
+theme_override_colors/default_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/bold_font_size = 60
 bbcode_enabled = true
-text = "[center][b]4 rules of fishing[/b][/center]
+text = "[center][b]GO FISH[/b][/center]"
+fit_content = true
 
-[center]M. ake sure to never go outside.
-A. lways report your findings.
-S. lap on that saftey mask.
-[b][s]K. ill kill ki [/s] [/b]H. ave fun![/center]"
+[node name="Button" type="Button" parent="ColorRect/HBoxContainer"]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../Button2")
+focus_next = NodePath("../Button2")
+text = "Start"
+
+[node name="Button2" type="Button" parent="ColorRect/HBoxContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../Button")
+focus_previous = NodePath("../Button")
+text = "Quit"

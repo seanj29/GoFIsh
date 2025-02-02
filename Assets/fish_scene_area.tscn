@@ -18,8 +18,8 @@ shader_parameter/mask_white = 1.0
 shader_parameter/color_texture = ExtResource("4_wkcum")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jyd10"]
-radius = 0.133603
-height = 0.615938
+radius = 0.283781
+height = 0.75032
 
 [node name="fish_mx_12" instance=ExtResource("1_52ui8")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
@@ -37,11 +37,3 @@ collision_mask = 4
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="fish_mx_1/Area3D" index="0"]
 transform = Transform3D(-4.37114e-08, -1, 8.74228e-08, 1, -4.37114e-08, 8.74228e-08, -8.74228e-08, 8.74228e-08, 1, -0.0565154, 0, 0)
 shape = SubResource("CapsuleShape3D_jyd10")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="fish_mx_1" index="1"]
-visible = false
-light_color = Color(0.784823, 0.451797, 3.85046e-07, 1)
-light_cull_mask = 4294966273
-distance_fade_enabled = true
-omni_range = 0.248674
-omni_shadow_mode = 0

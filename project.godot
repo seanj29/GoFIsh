@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
+FishItems="*res://Scripts/fish_items.gd"
 
 [dialogic]
 
@@ -33,7 +34,7 @@ directories/dtl_directory={
 "well": "res://Dialogue/well.dtl"
 }
 glossary/default_case_sensitive=true
-layout/style_list=[""]
+layout/style_list=[]
 layout/default_style=""
 variables={
 "Computer_On": false,

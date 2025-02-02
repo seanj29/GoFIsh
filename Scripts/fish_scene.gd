@@ -1,7 +1,7 @@
 extends Node3D
 class_name Fish
 
-@onready var light: OmniLight3D = $fish_mx_1/OmniLight3D
+var contains: String = ""
 # Minimum speed of the fish in meters per second.
 # @export var min_speed = 1
 # # Maximum speed of the fish in meters per second.
@@ -18,6 +18,9 @@ func init(start_pos: Vector3) -> void:
    global_position = start_pos
    var life_timer = get_tree().create_timer(randf_range(1,5))
    life_timer.timeout.connect(_on_life_timer_timeout)
+   if randi_range(1, 4) != 1:
+        contains = FishItems.give_sequential()
+
 
     # look_at_from_position(start_pos, target_position, Vector3.UP, true)
     # rotate_y(randf_range(-PI / 4, PI / 4))
@@ -26,9 +29,15 @@ func init(start_pos: Vector3) -> void:
     # velocity = Vector3.FORWARD * random_speed
     # velocity = velocity.rotated(Vector3.UP, rotation.y)
 
+func caught() -> void:
+    print("got caught I guess")
+    print("contains %s" % contains)
+    if not is_queued_for_deletion():
+        queue_free()
 
 func _on_life_timer_timeout() -> void:
-    queue_free()
-
-
-
+    if contains:
+        FishItems.return_to_pool(contains)
+    if not is_queued_for_deletion():
+        queue_free()
+      

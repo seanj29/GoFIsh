@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dvdtqcol0ynsj"]
+[gd_scene load_steps=12 format=3 uid="uid://dvdtqcol0ynsj"]
 
 [ext_resource type="PackedScene" uid="uid://bs5hge681llou" path="res://Assets/water_drinking_pool.glb" id="1_kiu5a"]
 [ext_resource type="Script" path="res://Scripts/well_interactable.gd" id="2_liuag"]
@@ -132,9 +132,6 @@ shader_parameter/texture_albedo = ExtResource("2_sebyo")
 shader_parameter/texture_refraction = SubResource("NoiseTexture2D_pysfw")
 shader_parameter/texture_normal = SubResource("NoiseTexture2D_pysfw")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_4vqxe"]
-size = Vector3(1.60645, 2.49463, 1.83582)
-
 [sub_resource type="Curve3D" id="Curve3D_50cmn"]
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.897469, -0.158158, 0.788021, 0, 0, 0, 0, 0, 0, -0.835207, -0.356114, 0.725283, 0, 0, 0, 0, 0, 0, 0.889461, -0.132557, 0.747158),
@@ -173,31 +170,21 @@ shape = SubResource("CylinderShape3D_m30s1")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00212365, 1.19209e-07, 0.00141096)
 surface_material_override/0 = SubResource("ShaderMaterial_nm1qr")
 
-[node name="Area3D" type="Area3D" parent="Sketchfab_model" index="2"]
-collision_layer = 8
-collision_mask = 4
-input_ray_pickable = false
-monitorable = false
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_model/Area3D" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.065918, 0.0510254, 0.417908)
-shape = SubResource("BoxShape3D_4vqxe")
-
-[node name="Path_1" type="Path3D" parent="Sketchfab_model" index="3"]
+[node name="Path_1" type="Path3D" parent="Sketchfab_model" index="2"]
 curve = SubResource("Curve3D_50cmn")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Sketchfab_model/Path_1" index="0"]
 transform = Transform3D(-0.114339, -0.0329669, 0.992899, 0.993137, -0.0280991, 0.113437, 0.024158, 0.999126, 0.0359517, 0.897469, -0.158158, 0.788021)
 rotation_mode = 4
 
-[node name="Path_2" type="Path3D" parent="Sketchfab_model" index="4"]
+[node name="Path_2" type="Path3D" parent="Sketchfab_model" index="3"]
 curve = SubResource("Curve3D_3opbx")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Sketchfab_model/Path_2" index="0"]
 transform = Transform3D(-0.995811, 0.0249037, 0.0879863, 0.0876878, -0.0128034, 0.996076, 0.0259316, 0.999631, 0.0105659, 0.131525, 0.792333, 0.788021)
 rotation_mode = 4
 
-[node name="Path_3" type="Path3D" parent="Sketchfab_model" index="5"]
+[node name="Path_3" type="Path3D" parent="Sketchfab_model" index="4"]
 curve = SubResource("Curve3D_1ga23")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Sketchfab_model/Path_3" index="0"]

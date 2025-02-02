@@ -8,3 +8,11 @@ transform = Transform3D(-0.20566, 0.916974, -0.341852, -0.161608, 0.3127, 0.9360
 [node name="Spear" parent="." instance=ExtResource("1_wvpmp")]
 transform = Transform3D(-0.199797, -0.979143, 0.0368849, 0.372133, -0.11065, -0.921561, 0.906421, -0.1704, 0.386479, 0.379056, 0.415556, -0.0979595)
 visible = false
+
+[node name="RayCast3D" type="RayCast3D" parent="Spear"]
+enabled = false
+target_position = Vector3(-2, 0, 0)
+collision_mask = 4
+hit_from_inside = true
+collide_with_areas = true
+collide_with_bodies = false
