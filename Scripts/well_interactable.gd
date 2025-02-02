@@ -75,7 +75,10 @@ func _on_mob_timer_timeout():
 
 
 func get_interact_text() -> String:
-	return "Press E to inspect"
+	if pickable:
+		return "Press E to Go fishing"
+	else:
+		return "Press Q to stop fishing."
 
 
 		

@@ -8,7 +8,7 @@ Pick up mask?
 	set {Inspected_Mask} = true
 - No
 	set {Inspected_Mask} = true
-if ({Inspected_Mask} == true) and ({Has_Hammer} == true) and ({Mask_Smashed} == false):
+if ({Inspected_Mask} == true) and ({Has_Mask} == false) and ({Has_Hammer} == true) and ({Mask_Smashed} == false):
 	Smash mask?
 	- Yes
 		set {Mask_Smashed} = true

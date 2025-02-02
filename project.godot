@@ -25,6 +25,7 @@ directories/dch_directory={
 "Self": "res://Dialogue/Self.dch"
 }
 directories/dtl_directory={
+"computer": "res://Dialogue/computer.dtl",
 "hammer": "res://Dialogue/hammer.dtl",
 "main": "res://Dialogue/main.dtl",
 "mask": "res://Dialogue/mask.dtl"
@@ -33,6 +34,7 @@ glossary/default_case_sensitive=true
 layout/style_list=[]
 layout/default_style=""
 variables={
+"Computer_On": false,
 "Has_Hammer": false,
 "Has_Mask": false,
 "Inspected_Hammer": false,

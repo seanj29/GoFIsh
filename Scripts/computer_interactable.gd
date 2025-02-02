@@ -2,11 +2,24 @@ extends Interactable
 
 @onready var computer_screen = $Screen
 
-var is_on = false
 
+func _ready() -> void:
+	Dialogic.VAR.variable_changed.connect(_dialogic_parse)
+
+func _dialogic_parse(info: Dictionary):
+	if info.variable == "Computer_On":
+		if info.new_value == true:
+			computer_screen.show()
+		else:
+			computer_screen.hide()
 func interact():
-    if pickable and not is_on:
-        is_on = true
-        computer_screen.show()
-        # add extra logic to move the player scene to the computer?
-        print("Interacted with ", self)
+	if pickable:
+		Dialogic.start("computer")
+		# add extra logic to move the player scene to the computer?
+
+
+func get_interact_text() -> String:
+	if pickable:
+		return "Press E to inspect"
+	else:
+		return "Press Q to quit out."

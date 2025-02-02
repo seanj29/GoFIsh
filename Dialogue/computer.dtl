@@ -1,0 +1,11 @@
+if {Computer_On} == false:
+	Self: My Computer
+	Turn it on?
+	- Yes
+		set {Computer_On} = true
+	- No
+else:
+	Turn it off?
+	- Yes
+		set {Computer_On} = false
+	- No
