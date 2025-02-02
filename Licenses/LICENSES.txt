@@ -1,2 +1,3 @@
 "Water drinking pool" (https://skfb.ly/6USsr) by DJMaesen is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 "Old Fishing Spear" (https://skfb.ly/oopnB) by marvelmaster is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+"Crt effect" by pend00 on https://godotshaders.com/shader/vhs-and-crt-monitor-effect/
