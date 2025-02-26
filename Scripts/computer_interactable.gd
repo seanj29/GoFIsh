@@ -3,13 +3,7 @@ extends Interactable
 @onready var computer_screen = $Screen
 @export var player: Player
 @export var computer_camera: Camera3D
-
-
 @onready var player_cam: Camera3D = player.get_node("Camera3D")
-
-
-func _ready() -> void:
-	pass
 
 
 

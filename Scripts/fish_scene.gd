@@ -18,7 +18,7 @@ func init(start_pos: Vector3) -> void:
    global_position = start_pos
    var life_timer = get_tree().create_timer(randf_range(1,5))
    life_timer.timeout.connect(_on_life_timer_timeout)
-   if randi_range(1, 4) != 1:
+   if randi_range(1, 10) == 1:
         contains = FishItems.give_sequential()
 
 

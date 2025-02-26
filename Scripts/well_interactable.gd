@@ -12,7 +12,12 @@ extends Interactable
 
 var fish_count = 0
 var turned_on = false
+var spear_piercing = false
+var spear_wanted_pos: Vector3
 
+func _ready() -> void:
+    super()
+    mob_timer.timeout.connect( _on_mob_timer_timeout)
 
 
 func _physics_process(delta: float) -> void:
@@ -22,12 +27,16 @@ func _physics_process(delta: float) -> void:
                 path.progress += 1.0 * delta
             else:
                 path.progress_ratio = 0.0
+    
+    if not spear_piercing and spear_wanted_pos and not is_zero_approx(spear_wanted_pos.distance_squared_to(spear.global_position)):
+        spear.global_position = spear.global_position.slerp(spear_wanted_pos, delta * 10)
+
+
 
 
 func _dialogic_parse(info: Dictionary):
     if info.variable == "Fishing":
         if info.new_value == true:
-            mob_timer.timeout.connect( _on_mob_timer_timeout)
             turned_on = true
             Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN 
             mob_timer.start(randf_range(1.0, 1.5))
@@ -48,23 +57,16 @@ func interact():
         
 
 func _unhandled_input(event: InputEvent) -> void:
-    if event is InputEventMouseMotion and turned_on:
-        # var space_state := get_world_3d().direct_space_state
-        var mousepos := get_viewport().get_mouse_position()
+    if event is InputEventMouseMotion and turned_on and not spear_piercing:
+        var mousepos := (event as InputEventMouseMotion).position
         var cam_origin := well_cam.project_ray_origin(mousepos)
         var looking_direction := (cam_origin + well_cam.project_ray_normal(mousepos) * 2)
-        # var detectionParameters = PhysicsRayQueryParameters3D.new() 
-        # detectionParameters.collide_with_areas = true
-        # detectionParameters.from = cam_origin
-        # detectionParameters.to = looking_direction
-        spear.global_position = Vector3(looking_direction.x, spear.global_position.y, looking_direction.z)
-        # var result := space_state.intersect_ray(detectionParameters)
-        # if result:
-        # 	print("Detected object: ", result.collider_id)
-    if event is InputEventMouseButton and turned_on:
+        spear_wanted_pos = Vector3(looking_direction.x, spear.global_position.y, looking_direction.z)
+
+    if event is InputEventMouseButton and turned_on and not spear_piercing:
         var mouse_event = event as InputEventMouseButton
         if mouse_event.pressed and mouse_event.button_index == MOUSE_BUTTON_LEFT:
-            _animate_spear()
+            _spear_pierce_anim()
             await get_tree().create_timer(0.4).timeout
             if ray_cast.is_colliding():
                 var collision: Area3D = ray_cast.get_collider()
@@ -79,6 +81,8 @@ func _unhandled_input(event: InputEvent) -> void:
         quit()
 
 
+
+
 func _on_mob_timer_timeout():
 
     if fish_count < 4:
@@ -90,12 +94,15 @@ func _on_mob_timer_timeout():
         random_path.add_child(fish)
         fish.init(random_path.global_position)
 
-func _animate_spear():
-    var tween = get_tree().create_tween()
+func _spear_pierce_anim():
+    spear_piercing = true
+    var tween = create_tween()
     audio.play()
     tween.tween_property(spear, "global_position:y", -1.0, 0.25).as_relative().set_trans(Tween.TRANS_EXPO)
     tween.tween_interval(0.2)
     tween.tween_property(spear, "global_position:y", 1.0, 0.5).as_relative().set_trans(Tween.TRANS_SINE)
+    if not tween.finished.is_connected(func (): spear_piercing = false):
+        tween.finished.connect(func (): spear_piercing = false)
 
 
 func get_interact_text() -> String:
@@ -109,7 +116,6 @@ func get_interact_text() -> String:
 func quit():
         turned_on = false
         mob_timer.stop()
-        mob_timer.timeout.disconnect(_on_mob_timer_timeout)
         player_cam.make_current()
         spear.visible = false
         ray_cast.enabled = false
