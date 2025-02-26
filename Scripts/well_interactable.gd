@@ -13,7 +13,11 @@ extends Interactable
 var fish_count = 0
 var turned_on = false
 var spear_piercing = false
+var spear_wanted_pos: Vector3
 
+func _ready() -> void:
+    super()
+    mob_timer.timeout.connect( _on_mob_timer_timeout)
 
 
 func _physics_process(delta: float) -> void:
@@ -23,12 +27,16 @@ func _physics_process(delta: float) -> void:
                 path.progress += 1.0 * delta
             else:
                 path.progress_ratio = 0.0
+    
+    if not spear_piercing and spear_wanted_pos and not is_zero_approx(spear_wanted_pos.distance_squared_to(spear.global_position)):
+        spear.global_position = spear.global_position.lerp(spear_wanted_pos, delta * 10)
+
+
 
 
 func _dialogic_parse(info: Dictionary):
     if info.variable == "Fishing":
         if info.new_value == true:
-            mob_timer.timeout.connect( _on_mob_timer_timeout)
             turned_on = true
             Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN 
             mob_timer.start(randf_range(1.0, 1.5))
@@ -50,12 +58,10 @@ func interact():
 
 func _unhandled_input(event: InputEvent) -> void:
     if event is InputEventMouseMotion and turned_on and not spear_piercing:
-        # var space_state := get_world_3d().direct_space_state
         var mousepos := (event as InputEventMouseMotion).position
         var cam_origin := well_cam.project_ray_origin(mousepos)
         var looking_direction := (cam_origin + well_cam.project_ray_normal(mousepos) * 2)
-        var spear_pos = Vector3(looking_direction.x, spear.global_position.y, looking_direction.z)
-        spear.global_position = spear_pos
+        spear_wanted_pos = Vector3(looking_direction.x, spear.global_position.y, looking_direction.z)
 
     if event is InputEventMouseButton and turned_on and not spear_piercing:
         var mouse_event = event as InputEventMouseButton
@@ -73,6 +79,8 @@ func _unhandled_input(event: InputEvent) -> void:
                     
     if event.is_action_pressed("quit"):
         quit()
+
+
 
 
 func _on_mob_timer_timeout():
@@ -93,8 +101,8 @@ func _spear_pierce_anim():
     tween.tween_property(spear, "global_position:y", -1.0, 0.25).as_relative().set_trans(Tween.TRANS_EXPO)
     tween.tween_interval(0.2)
     tween.tween_property(spear, "global_position:y", 1.0, 0.5).as_relative().set_trans(Tween.TRANS_SINE)
-    await tween.finished
-    spear_piercing = false
+    if not tween.finished.is_connected(func (): spear_piercing = false):
+        tween.finished.connect(func (): spear_piercing = false)
 
 
 func get_interact_text() -> String:
