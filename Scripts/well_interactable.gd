@@ -29,7 +29,7 @@ func _physics_process(delta: float) -> void:
                 path.progress_ratio = 0.0
     
     if not spear_piercing and spear_wanted_pos and not is_zero_approx(spear_wanted_pos.distance_squared_to(spear.global_position)):
-        spear.global_position = spear.global_position.lerp(spear_wanted_pos, delta * 10)
+        spear.global_position = spear.global_position.slerp(spear_wanted_pos, delta * 10)
 
 
 
